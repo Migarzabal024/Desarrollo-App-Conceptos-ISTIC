@@ -9,7 +9,13 @@
     "export": "node -e \"require('./batch/exportador')()\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["node", "express", "sequelize", "mysql", "ejs"],
+  "keywords": [
+    "node",
+    "express",
+    "sequelize",
+    "mysql",
+    "ejs"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {

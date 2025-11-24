@@ -3,11 +3,15 @@
 <h1>Listado de Conceptos</h1>
 
 <a href="/conceptos/crear">
-    <button>Crear nuevo concepto</button>
+    <button style="background:#4CAF50; color:white; padding:10px 20px;">
+        ➕ Crear nuevo concepto
+    </button>
 </a>
 
 <% if (conceptos.length === 0) { %>
-    <p>No hay conceptos cargados.</p>
+    <p style="text-align: center; color: #666; padding: 40px;">
+        No hay conceptos cargados.
+    </p>
 <% } else { %>
     <table>
         <thead>
@@ -19,69 +23,109 @@
             </tr>
         </thead>
         <tbody>
-            <% conceptos.forEach(c => { %>
+            <% conceptos.forEach(function(concepto) { %>
                 <tr>
-                    <td><%= c.id %></td>
-                    <td><%= c.nombre %></td>
-                    <td><%= c.descripcion %></td>
-                    <td>
-                        <a href="/conceptos/editar/<%= c.id %>">
-                            <button type="button">Editar</button>
+                    <td><%= concepto.id %></td>
+                    <td><strong><%= concepto.nombre %></strong></td>
+                    <td><%= concepto.descripcion %></td>
+                    <td style="white-space: nowrap;">
+                        <a href="/conceptos/editar/<%= concepto.id %>">
+                            <button type="button" style="background:#2196F3; color:white; padding:8px 12px; border:none; border-radius:4px; cursor:pointer;">
+                                ✏️ Editar
+                            </button>
                         </a>
-                        <button onclick="eliminarConcepto(c.id )" style="background:red; color:white;">
-                            Eliminar
-                        </button>
+                        
+                       <a href="/conceptos/eliminar/<%= concepto.id %>">
+                            <button type="button" style="background:#f44336; color:white; padding:8px 12px; border:none; border-radius:4px; cursor:pointer; margin-left:5px;">
+                                🗑️ Eliminar
+                            </button>
+                        </a>
                     </td>
                 </tr>
-            <% }) %>
+            <% }); %>
         </tbody>
     </table>
 
-    <button onclick="eliminarTodos()" style="margin-top:20px; background:darkred; color:white;">
-        BORRAR TODOS
+    <button 
+        type="button"
+        id="btn-eliminar-todos"
+        style="margin-top:30px; background:darkred; color:white; padding:12px 24px; font-size:16px; border:none; border-radius:4px; cursor:pointer;">
+        🗑️ BORRAR TODOS LOS CONCEPTOS
     </button>
 <% } %>
 
 <script>
-    async function eliminarConcepto(id) {
-        if (!confirm('¿Eliminar este concepto?')) return;
-        
-        try {
-            const response = await fetch(`/api/conceptos/${id}`, {
-                method: 'DELETE'
-            });
-            
-            if (response.ok) {
-                alert('Concepto eliminado');
-                location.reload();
-            } else {
-                alert('Error al eliminar');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error al eliminar');
+    document.addEventListener('DOMContentLoaded', function() {
+
+
+        // Botón eliminar todos
+        const btnEliminarTodos = document.getElementById('btn-eliminar-todos');
+        if (btnEliminarTodos) {
+            btnEliminarTodos.addEventListener('click', eliminarTodos);
         }
-    }
+        });
 
     async function eliminarTodos() {
-        if (!confirm('¿ELIMINAR TODOS LOS CONCEPTOS? Esta acción no se puede deshacer.')) return;
+        if (!confirm('⚠️ ¿ELIMINAR TODOS LOS CONCEPTOS?\n\nEsta acción no se puede deshacer.')) {
+            return;
+        }
         
         try {
             const response = await fetch('/api/conceptos', {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
             
             if (response.ok) {
-                alert('Todos los conceptos eliminados');
-                location.reload();
+                alert('✅ Todos los conceptos han sido eliminados');
+                window.location.reload();
             } else {
-                alert('Error al eliminar');
+                const error = await response.json();
+                alert('❌ Error: ' + (error.error || 'No se pudo eliminar'));
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error al eliminar');
+            alert('❌ Error de conexión al eliminar los conceptos');
         }
     }
 </script>
+
+<style>
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+    
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+        background: #f8f9fa;
+        font-weight: bold;
+    }
+    
+    tr:hover {
+        background: #f9f9f9;
+    }
+    
+    button {
+        transition: opacity 0.2s, transform 0.1s;
+    }
+    
+    button:hover {
+        opacity: 0.8;
+        transform: translateY(-1px);
+    }
+    
+    button:active {
+        transform: translateY(0);
+    }
+</style>
 
 <%- include("partials/footer") %>

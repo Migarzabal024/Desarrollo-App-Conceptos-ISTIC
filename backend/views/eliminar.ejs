@@ -1,0 +1,28 @@
+<%- include("partials/header") %>
+
+<h1>Eliminar Concepto</h1>
+
+<div style="background:#fff3cd; border:1px solid #ffc107; padding:20px; border-radius:8px; margin-bottom:20px;">
+    <h2 style="color:#856404; margin-top:0;">⚠️ Advertencia</h2>
+    <p style="color:#856404;">Está a punto de eliminar el siguiente concepto. Esta acción no se puede deshacer.</p>
+</div>
+
+<div style="background:#f8f9fa; padding:20px; border-radius:8px; margin-bottom:20px;">
+    <p><strong>ID:</strong> <%= concepto.id %></p>
+    <p><strong>Nombre:</strong> <%= concepto.nombre %></p>
+    <p><strong>Descripción:</strong> <%= concepto.descripcion %></p>
+</div>
+
+<form action="/conceptos/eliminar/<%= concepto.id %>" method="POST">
+    <button type="submit" style="background:#f44336; color:white; padding:12px 24px; font-size:16px; border:none; border-radius:4px; cursor:pointer;">
+        🗑️ Confirmar Eliminación
+    </button>
+    
+    <a href="/conceptos">
+        <button type="button" style="background:#6c757d; color:white; padding:12px 24px; font-size:16px; border:none; border-radius:4px; cursor:pointer; margin-left:10px;">
+            Cancelar
+        </button>
+    </a>
+</form>
+
+<%- include("partials/footer") %>

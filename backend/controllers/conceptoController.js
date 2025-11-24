@@ -1,13 +1,15 @@
+// backend/controllers/conceptoController.js
+
 const servicio = require("../services/conceptoService");
 
 module.exports = {
+    // ========== VISTAS EJS ==========
     async vistaListado(req, res) {
         try {
             const conceptos = await servicio.obtenerTodos();
             res.render("conceptos", { 
-                title: "Conceptos", 
-                year: new Date().getFullYear(), 
-                conceptos 
+                title: "Listado de Conceptos", 
+                conceptos
             });
         } catch (error) {
             console.error("Error en vistaListado:", error.message);
@@ -18,8 +20,7 @@ module.exports = {
     vistaCrear(req, res) {
         try {
             res.render("crear", { 
-                title: "Crear Concepto", 
-                year: new Date().getFullYear() 
+                title: "Crear Concepto"
             });
         } catch (error) {
             console.error("Error en vistaCrear:", error.message);
@@ -34,9 +35,8 @@ module.exports = {
                 return res.status(404).send("Concepto no encontrado");
             }
             res.render("editar", { 
-                title: "Editar", 
-                year: new Date().getFullYear(), 
-                concepto 
+                title: "Editar Concepto", 
+                concepto
             });
         } catch (error) {
             console.error("Error en vistaEditar:", error.message);
@@ -44,7 +44,57 @@ module.exports = {
         }
     },
 
-    // ========== API REST ==========
+    async vistaEliminar(req, res) {
+        try {
+            const concepto = await servicio.obtenerPorId(req.params.id);
+            if (!concepto) {
+                return res.status(404).send("Concepto no encontrado");
+            }
+            res.render("eliminar", { 
+                title: "Eliminar Concepto", 
+                concepto
+            });
+        } catch (error) {
+            console.error("Error en vistaEliminar:", error.message);
+            res.status(500).send("Error al cargar el concepto");
+        }
+    },
+
+    // ========== FORMULARIOS EJS (POST tradicional) ==========
+    async postCrear(req, res) {
+        try {
+            await servicio.crear(req.body);
+            res.redirect("/conceptos");
+        } catch (error) {
+            console.error("Error en postCrear:", error.message);
+            res.status(500).send("Error al crear el concepto");
+        }
+    },
+
+    async postEditar(req, res) {
+        try {
+            await servicio.actualizar(req.params.id, req.body);
+            res.redirect("/conceptos");
+        } catch (error) {
+            console.error("Error en postEditar:", error.message);
+            res.status(500).send("Error al actualizar el concepto");
+        }
+    },
+
+    async postEliminarForm(req, res) {
+        try {
+            const eliminado = await servicio.eliminar(req.params.id);
+            if (eliminado === 0) {
+                return res.status(404).send("Concepto no encontrado");
+            }
+            res.redirect("/conceptos");
+        } catch (error) {
+            console.error("Error en postEliminarForm:", error.message);
+            res.status(500).send("Error al eliminar el concepto");
+        }
+    },
+
+    // ========== API REST (JSON) ==========
     async apiListar(req, res) {
         try {
             const conceptos = await servicio.obtenerTodos();
@@ -77,7 +127,6 @@ module.exports = {
             const nuevo = await servicio.crear(req.body);
             res.status(201).json(nuevo);
         } catch (error) {
-            // Manejo específico para conceptos duplicados
             if (error.name === 'SequelizeUniqueConstraintError') {
                 return res.status(409).json({ 
                     error: "Ya existe un concepto con ese nombre" 
@@ -121,27 +170,6 @@ module.exports = {
         } catch (error) {
             console.error("Error en apiEliminarTodos:", error.message);
             res.status(500).json({ error: "Error al eliminar conceptos" });
-        }
-    },
-
-    // ========== FORMULARIOS EJS ==========
-    async postCrear(req, res) {
-        try {
-            await servicio.crear(req.body);
-            res.redirect("/conceptos");
-        } catch (error) {
-            console.error("Error en postCrear:", error.message);
-            res.status(500).send("Error al crear el concepto");
-        }
-    },
-
-    async postEditar(req, res) {
-        try {
-            await servicio.actualizar(req.params.id, req.body);
-            res.redirect("/conceptos");
-        } catch (error) {
-            console.error("Error en postEditar:", error.message);
-            res.status(500).send("Error al actualizar el concepto");
         }
     }
 };

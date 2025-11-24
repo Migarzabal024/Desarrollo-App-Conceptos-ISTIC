@@ -38,8 +38,7 @@ const Concepto = sequelize.define("Concepto", {
     }
 }, {
     tableName: 'conceptos',
-    timestamps: true,
-    createdAt: 'createdAt',
+    timestamps: false,
     updatedAt: false  // ← Solo desactiva updatedAt
 });
 

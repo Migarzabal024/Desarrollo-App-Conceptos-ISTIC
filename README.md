@@ -63,24 +63,24 @@ Sistema web full-stack para la gestión integral de conceptos de programación v
 ## 🛠️ Tecnologías Utilizadas
 
 ### Backend
-| Tecnología | Versión | Propósito |
-|-----------|---------|-----------|
-| Node.js | 18+ | Entorno de ejecución |
-| Express | 5.1.0 | Framework web |
-| Sequelize | 6.37.7 | ORM para MySQL |
-| MySQL2 | 3.15.3 | Driver de base de datos |
-| EJS | 3.1.10 | Motor de plantillas |
-| node-cron | 4.2.1 | Tareas programadas |
-| dotenv | 17.2.3 | Variables de entorno |
-| cors | 2.8.5 | Control de acceso |
+| Tecnología |
+|-----------|
+| Node.js |
+| Express |
+| Sequelize |
+| MySQL2 |
+| EJS |
+| node-cron |
+| dotenv |
+| cors |
 
 ### Frontend
-| Tecnología | Versión | Propósito |
-|-----------|---------|-----------|
-| React | 19.2.0 | Librería UI |
-| React DOM | 19.2.0 | Renderizado |
-| Axios | 1.7.9 | Cliente HTTP |
-| React Scripts | 5.0.1 | Build tools |
+| Tecnología | Propósito |
+|-----------|-----------|
+| React | Librería UI |
+| React DOM| Renderizado |
+| Axios | Cliente HTTP |
+| React Scripts | Build tools |
 
 ---
 
@@ -768,25 +768,10 @@ app.use(cors({
 
 ## 👥 Autor
 
-**Miguel Arzabal**
+**Martin Igarzabal**
 
 - GitHub: [@Migarzabal024](https://github.com/Migarzabal024)
 - Email: migarzabal024@gmail.com
 
----
-
-## 🙏 Agradecimientos
-
-- **Profesor Franco Borsani** por su guía durante el curso
-- **ISTIC** por proporcionar el entorno de aprendizaje
-- Comunidad de **Node.js** y **React** por la excelente documentación
-
----
-
-<div align="center">
-
-**⭐ Si este proyecto te fue útil, considera darle una estrella en GitHub ⭐**
-
-Hecho con ❤️ por Miguel Arzabal
-
+<div>
 </div>

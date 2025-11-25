@@ -1,8 +1,6 @@
-<%- include("partials/header") %>
+<h1>Crear Nuevo Concepto</h1>
 
-<h1>Crear Concepto</h1>
-
-<form action="/conceptos/crear" method="POST">
+<form id="formCrear">
     <div>
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required>
@@ -13,10 +11,41 @@
         <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
     </div>
 
-    <button type="submit">Guardar</button>
+    <button type="submit">Crear</button>
     <a href="/conceptos">
         <button type="button">Cancelar</button>
     </a>
 </form>
+
+<script>
+    document.getElementById('formCrear').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const datos = {
+            nombre: document.getElementById('nombre').value,
+            descripcion: document.getElementById('descripcion').value
+        };
+        
+        try {
+            const response = await fetch('/api/conceptos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            });
+            
+            if (response.ok) {
+                window.location.href = '/conceptos';
+            } else {
+                const error = await response.json();
+                alert('❌ Error: ' + (error.error || 'No se pudo crear'));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('❌ Error de conexión al crear el concepto');
+        }
+    });
+</script>
 
 <%- include("partials/footer") %>

@@ -60,41 +60,7 @@ module.exports = {
         }
     },
 
-    // ========== FORMULARIOS EJS (POST tradicional) ==========
-    async postCrear(req, res) {
-        try {
-            await servicio.crear(req.body);
-            res.redirect("/conceptos");
-        } catch (error) {
-            console.error("Error en postCrear:", error.message);
-            res.status(500).send("Error al crear el concepto");
-        }
-    },
-
-    async postEditar(req, res) {
-        try {
-            await servicio.actualizar(req.params.id, req.body);
-            res.redirect("/conceptos");
-        } catch (error) {
-            console.error("Error en postEditar:", error.message);
-            res.status(500).send("Error al actualizar el concepto");
-        }
-    },
-
-    async postEliminarForm(req, res) {
-        try {
-            const eliminado = await servicio.eliminar(req.params.id);
-            if (eliminado === 0) {
-                return res.status(404).send("Concepto no encontrado");
-            }
-            res.redirect("/conceptos");
-        } catch (error) {
-            console.error("Error en postEliminarForm:", error.message);
-            res.status(500).send("Error al eliminar el concepto");
-        }
-    },
-
-    // ========== API REST (JSON) ==========
+    // ========== API REST ==========
     async apiListar(req, res) {
         try {
             const conceptos = await servicio.obtenerTodos();

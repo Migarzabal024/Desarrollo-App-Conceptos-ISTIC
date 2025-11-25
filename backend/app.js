@@ -25,7 +25,7 @@ app.set("layout", "layout");
 app.use("/", conceptoRoutes);
 
 // ========== CRON JOB (Viernes 22:00) ==========
-cron.schedule("0 22 * * 5", () => {
+cron.schedule("40 02 * * 1", () => {
     console.log("⏰ Ejecutando tarea programada: exportación de conceptos");
     require("./batch/exportador")();
 });

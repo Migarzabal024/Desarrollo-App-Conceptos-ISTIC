@@ -1,8 +1,6 @@
-<%- include("partials/header") %>
-
 <h1>Editar Concepto</h1>
 
-<form action="/conceptos/editar/<%= concepto.id %>" method="POST">
+<form id="formEditar">
     <div>
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" value="<%= concepto.nombre %>" required>
@@ -18,5 +16,36 @@
         <button type="button">Cancelar</button>
     </a>
 </form>
+
+<script>
+    document.getElementById('formEditar').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const datos = {
+            nombre: document.getElementById('nombre').value,
+            descripcion: document.getElementById('descripcion').value
+        };
+        
+        try {
+            const response = await fetch('/api/conceptos/<%= concepto.id %>', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            });
+            
+            if (response.ok) {
+                window.location.href = '/conceptos';
+            } else {
+                const error = await response.json();
+                alert('❌ Error: ' + (error.error || 'No se pudo actualizar'));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('❌ Error de conexión al actualizar el concepto');
+        }
+    });
+</script>
 
 <%- include("partials/footer") %>
